@@ -12,7 +12,6 @@ const getPokemons = async (req, res, url, maxpag = 0) => {
         vida: pokemon.data.stats[0].base_stat,
         ataque: pokemon.data.stats[1].base_stat,
         defensa: pokemon.data.stats[2].base_stat,
-        velocidad: pokemon.data.stats[5].base_stat,
       };
       allPokemons.push(randomPokemon);
     } 

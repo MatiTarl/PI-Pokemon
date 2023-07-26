@@ -30,14 +30,5 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    velocidad: {
-      type: DataTypes.STRING
-    },
-    altura: {
-      type: DataTypes.STRING
-    },
-    peso: {
-      type: DataTypes.STRING
-    },
   }, { timestamps: false });
 };

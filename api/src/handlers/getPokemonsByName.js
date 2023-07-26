@@ -16,7 +16,6 @@ const getPokemonsByName = async (req, res, url) => {
             vida: data.stats[0].base_stat,
             ataque: data.stats[1].base_stat,
             defensa: data.stats[2].base_stat,
-            speed: data.stats[5].base_stat
          }
          console.log(pokemonByName);
          

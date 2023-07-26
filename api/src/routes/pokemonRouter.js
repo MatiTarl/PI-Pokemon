@@ -29,7 +29,7 @@ const URL = "https://pokeapi.co/api/v2/pokemon";
     try {
     const {id} = req.params;
     const pokemonByDb = await Pokemon.findOne({where: {id: id}});
-    if(pokemonByDb.length === 0){
+    if(pokemonByDb === null){
         return getPokemonById(req, res, URL);
     }
     return res.status(200).send(pokemonByDb);

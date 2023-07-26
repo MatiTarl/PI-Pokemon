@@ -11,7 +11,8 @@ const getPokemonsById = async (req, res, url) => {
         vida: data.stats[0].base_stat,
         ataque: data.stats[1].base_stat,
         defensa: data.stats[2].base_stat,
-        speed: data.stats[5].base_stat
+        type1: data.types[0].type.name,
+        type2: data.types[1].type.name,
      }
      return res.status(200).send(pokemonById);
    } catch (error) {
