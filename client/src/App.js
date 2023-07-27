@@ -4,8 +4,11 @@ import Home from './components/home';
 import Login from './components/login';
 import Detail from './components/detail';
 import Form from './components/form';
+import axios from "axios"
+import React, { useEffect } from 'react';
 
 function App() {
+
   return (
     <div className='App' >
       <Routes>

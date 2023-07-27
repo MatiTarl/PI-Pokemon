@@ -13,15 +13,16 @@ const URL = "https://pokeapi.co/api/v2/pokemon";
         if (name) {
             return getPokemonByName(req, res, URL);
         } else {
-            const apiPokemons = await getPokemon(req, res, URL);
             if(backPokemon){
-            const dataCombined = apiPokemons.concat(backPokemon);
-            return res.send(dataCombined);
+                const apiPokemons = await getPokemon(req, res, URL);
+                const dataCombined = apiPokemons.concat(backPokemon);
+                return res.send(dataCombined);
             }
+            const apiPokemons = await getPokemon(req, res, URL);
             return res.status(200).send(apiPokemons)
         }
     } catch (error) {
-        res.status(410).send({ "error": error.message });
+        res.status(400).send({ "error": error.message });
     }
 });
 
