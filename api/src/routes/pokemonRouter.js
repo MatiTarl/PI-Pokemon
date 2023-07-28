@@ -6,25 +6,25 @@ const getPokemonById = require("../handlers/getPokemonsById");
 const getPokemon = require("../handlers/getPokemones");
 const URL = "https://pokeapi.co/api/v2/pokemon";
 
- pokemons.get("/", async (req, res) => {
+pokemons.get("/", async (req, res) => {
     try {
-        const { name } = req.query;
-        const backPokemon = await Pokemon.findAll();
-        if (name) {
-            return getPokemonByName(req, res, URL);
-        } else {
-            if(backPokemon){
-                const apiPokemons = await getPokemon(req, res, URL);
-                const dataCombined = apiPokemons.concat(backPokemon);
-                return res.send(dataCombined);
-            }
+      const { name } = req.query;
+      const backPokemon = await Pokemon.findAll();
+      if (name) {
+        return getPokemonByName(req, res, URL);
+      } else {
+        if(!backPokemon.length === 0){
             const apiPokemons = await getPokemon(req, res, URL);
-            return res.status(200).send(apiPokemons)
+            const dataCombined = backPokemon.concat(apiPokemons);
+            return res.status(200).send(dataCombined);
         }
+        const apiPokemons = await getPokemon(req, res, URL);
+        return res.status(200).send(apiPokemons);
+      }
     } catch (error) {
-        res.status(400).send({ "error": error.message });
+      res.status(400).send({ error: error.message });
     }
-});
+  });
 
  pokemons.get("/:id", async (req, res) => {
     try {
