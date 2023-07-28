@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, NavLink } from "react-router-dom";
- function Home() {
-  const [allPokemons, setAllPokemons] = useState([]);
-   useEffect(() => {
-    axios
-      .get("http://localhost:3001/pokemons")
-      .then((response) => {
-        const pokemonData = response.data;
-        const uniquePokemons = pokemonData.filter(
-            (pokemon, index, self) =>
-              index === self.findIndex((p) => p.name === pokemon.name)
-        );
-        setAllPokemons(uniquePokemons)
-      })
-      .catch((error) => {
-        return error.message
-      });
-  }, []);
+import { connect } from "react-redux";
+
+ function Home(prop) {
+  
+  const allPokemons = [...prop.allPokemons]
+  const allPokemonsCopy = allPokemons;
+
+  console.log(allPokemonsCopy);
+
    return (
     <div>
-      {allPokemons.map((pokemon) => {
+      {
+      allPokemonsCopy.map( poke => {
         return <div>
-               <Link to={`detail/${pokemon.id}`} >
-                <h2>{pokemon.name}</h2>
-                <img src={pokemon.imagen} alt="imagen"></img>
-               </Link>               
-        </div>
-            
-      })}
+          <h1>{poke.name}</h1>
+          <img src={poke.imagen} alt="imagen" ></img>
+          </div>
+      })
+
+      }
     </div>
   );
 }
- export default Home;
+
+const mapStateToProps = (state) => {
+  return { allPokemons: state.allPokemons}
+}
+ export default connect(mapStateToProps, null)(Home);
