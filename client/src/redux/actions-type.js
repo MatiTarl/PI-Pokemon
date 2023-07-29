@@ -1,1 +1,4 @@
 export const GET_POKEMONS = "GET_POKEMONS";
+export const FILTER_POKEMONS = "FILTER_POKEMONS";
+export const ORDER_NAME = "ORDER_POKEMONS"
+export const ORDER_ATACK = "ORDER_ATACK"

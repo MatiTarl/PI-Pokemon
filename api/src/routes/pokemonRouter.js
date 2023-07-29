@@ -13,7 +13,7 @@ pokemons.get("/", async (req, res) => {
       if (name) {
         return getPokemonByName(req, res, URL);
       } else {
-        if(!backPokemon.length === 0){
+        if(backPokemon){
             const apiPokemons = await getPokemon(req, res, URL);
             const dataCombined = backPokemon.concat(apiPokemons);
             return res.status(200).send(dataCombined);
