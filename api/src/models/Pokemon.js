@@ -30,5 +30,17 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    type1: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    type2: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    // source: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // }
   }, { timestamps: false });
 };

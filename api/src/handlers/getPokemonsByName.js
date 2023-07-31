@@ -1,14 +1,14 @@
 const axios = require("axios");
+const { Pokemon, Type } = require("../db");
 
 const getPokemonsByName = async (req, res, url) => {
     const { name } = req.query;
+    const pokemon = await Pokemon.findOne({where: {name: name}});
    try {
-    //si llega el nombre por query hacemos esto 
-     if(name){
-        const { data } = await axios(`${url}/${name}`);
-
-        console.log(data);
-
+        if(pokemon){
+         return res.status(200).send(pokemon);       
+        } else{
+         const { data } = await axios(`${url}/${name}`);
          const pokemonByName = {
             id: data.id,
             name: data.name,
@@ -17,10 +17,8 @@ const getPokemonsByName = async (req, res, url) => {
             ataque: data.stats[1].base_stat,
             defensa: data.stats[2].base_stat,
          }
-         console.log(pokemonByName);
-         
-         return res.status(200).send(pokemonByName);       
-     }
+         return res.status(200).send(pokemonByName);  
+        }     
    } catch (error) {
     return res.status(405).send({"error": error.message})
    }

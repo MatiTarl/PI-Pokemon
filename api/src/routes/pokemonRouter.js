@@ -52,6 +52,8 @@ pokemons.get("/", async (req, res) => {
             vida,
             ataque,
             defensa,
+            type1,
+            type2
          });
 
          if(type1){  // esto es para vincular la tablas con el pokemon creado

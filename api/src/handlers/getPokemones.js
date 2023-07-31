@@ -12,6 +12,9 @@ const getPokemons = async (req, res, url, maxpag = 0, allPokemons = []) => {
         vida: pokemon.data.stats[0].base_stat,
         ataque: pokemon.data.stats[1].base_stat,
         defensa: pokemon.data.stats[2].base_stat,
+        type1: pokemon.data.types[0] ? pokemon.data.types[0].type.name : "",
+        type2: pokemon.data.types[1] ? pokemon.data.types[1].type.name : "No Second type",
+        source: "API"
       };
       allPokemons.push(randomPokemon);
     }
