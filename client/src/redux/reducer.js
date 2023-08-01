@@ -1,8 +1,8 @@
-import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME} from "./actions-type"; 
+import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS} from "./actions-type"; 
 
  const initialState = { 
-  allPokemons: [], 
-  allPokemonsCopy: [] 
+  allPokemons: [],
+  PokemonsCopy: [],
 }; 
 
  const reducer = (state = initialState, { type, payload }) => { 
@@ -10,6 +10,9 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME} fro
 // ___________________________________________________________
     case GET_POKEMONS: 
       return { ...state, allPokemons: payload }; 
+// ___________________________________________________________
+   case GET_COPY_POKEMONS:
+    return {...state, PokemonsCopy: payload };
 // ___________________________________________________________
      case ORDER_NAME: 
       const allPokemonsNameCopy = [...state.allPokemons]; 
@@ -26,18 +29,26 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME} fro
       }; 
 // ___________________________________________________________
      case ORDER_CREATION: 
-      const allPokemonsCopy = [...state.allPokemons]; 
+      const allPokemonsCopy = [...state.PokemonsCopy]; 
+      const pokemonsFiltered = [];
       const filteredPokemons = 
-        payload === "API" ? allPokemonsCopy.filter((pokemon) => pokemon.id.toString().length > 2) 
-        : payload === "BACK" ? allPokemonsCopy.filter((pokemon) => pokemon.id.toString().length < 3) 
-        : payload === "API_BACK" && allPokemonsCopy; 
+        payload === "API" ? allPokemonsCopy.map((pokemon) => {
+          if(pokemon.id.toString().length < 3){
+            pokemonsFiltered.push(pokemon)
+          }}) 
+        : payload === "BACK" ? allPokemonsCopy.map((pokemon) => {
+          if(pokemon.id.toString().length > 2){
+            pokemonsFiltered.push(pokemon)
+          }}) 
+        : payload === "API_BACK" && pokemonsFiltered.push(...state.PokemonsCopy); 
       return { 
         ...state, 
-        filteredPokemons: filteredPokemons 
+        allPokemons: pokemonsFiltered 
       }; 
 // ___________________________________________________________
     case GET_BY_NAME: 
-    return {...state, allPokemonsCopy: payload}
+    return {...state, allPokemons: [payload]}
+//_____________________________________________________________ 
 
      default: 
       return { ...state }; 

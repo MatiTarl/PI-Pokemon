@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import {NavLink, Nav } from "react-router-dom";
 import { connect, useDispatch, } from "react-redux";
-import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation} from "../redux/actions";
+import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName} from "../redux/actions";
 
  function Home(prop) {
-    
-  const allPokemons = [...prop.allPokemons]
-  const allPokemonsCopy = allPokemons;
+       
+ const allPokemonsCopy = prop.allPokemons; 
 
-//-------------------------------------------------------------
+
+//---------------------------handlers de los filtros-----------------------
   const dispatch = useDispatch();
   const handlerOrderByName = (event) => {
     dispatch(orderPokemons(event.target.value));
@@ -17,19 +17,36 @@ import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation} from "../
     dispatch(orderPokemonsByAtack(event.target.value));
   }
   const handlerOrderByCreation = (event) => {
-    dispatch(orderPokemonsByCreation(event.target.value))
+    dispatch(orderPokemonsByCreation(event.target.value));
   }
+//-----------------------SearchBar----------------------------------------
+const [name, setName] = React.useState("");
 
-  
+const handleChange = event => {
+   const {value} = event.target;
+   setName(value);
+}
+const searchFuntion = (name) => {
+  const lowerName = name.toLowerCase()
+  dispatch(getByName(lowerName));
+}
+//------------------------Reload pokemons---------------------------------
+
+//------------------------------------------------------------------------
 
    return (
     <div>
       <NavLink to={"/form"} >
       <button>Create Pokemon</button>
       </NavLink>
+      <br/>
+      <NavLink to={"/home"} >
+      <button>Home</button>
+      </NavLink>
+      <br/>
       <div>
-      <input type="search" id="buscador" name="search"/>  
-      <button >Buscar</button>
+      <input type="search" id="buscador" name="search" onChange={handleChange} />  
+      <button onClick={() => searchFuntion(name)} >Buscar</button>
       </div>
       <select onChange={handlerOrderByName}>
         <option>Nombre</option>
@@ -64,6 +81,6 @@ import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation} from "../
 }
 
 const mapStateToProps = (state) => {
-  return { allPokemons: state.filteredPokemons ?? state.allPokemons }
+  return { allPokemons: state.allPokemons };
 }
  export default connect(mapStateToProps, null)(Home);
