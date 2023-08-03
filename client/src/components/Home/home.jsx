@@ -1,7 +1,8 @@
 import React, { useState, useEffect} from "react";
 import {NavLink, Nav } from "react-router-dom";
 import { connect, useDispatch, } from "react-redux";
-import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName} from "../redux/actions";
+import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName, getPokemons, getCopyPokemons} from "../../redux/actions";
+import styles from "./home.module.css";
 
  function Home(prop) {
  const allPokemonsCopy = prop.allPokemons; 
@@ -24,8 +25,12 @@ const handleChange = event => {
 }
 const searchFuntion = (name) => {
   const lowerName = name.toLowerCase()
+  if (name.length < 1) {
+    return alert("Debe completar el campo para buscar")
+  }
   dispatch(getByName(lowerName));
 }
+
 //------------------------Paginado----------------------------------------
 const pokemonPerPage = 12; 
 let actualPage = 1;
@@ -55,22 +60,26 @@ useEffect(() => {
   setCurrentPage(0);
 }, [allPokemonsCopy])
 
-//------------------------------------------------------------------------
-
+//-------------------------Reset de home----------------------------
+const resetHandler = () => {
+  dispatch(getPokemons());
+  dispatch(getCopyPokemons());
+}
+//------------------------------------------------------------------
    return (
-    <div>
+    <div className={styles.DivHome}>
       <NavLink to={"/form"} >
       <button>Create Pokemon</button>
       </NavLink>
       <br/>
-      <NavLink to={"/home"} >
-      <button>Home</button>
-      </NavLink>
+      <button onClick={resetHandler}>Reset</button>
+      <br/>
       <br/>
       <div>
-      <input type="search" id="buscador" name="search" onChange={handleChange} />  
-      <button onClick={() => searchFuntion(name)} >Buscar</button>
+      <input type="search" id="buscador" name="search" onChange={handleChange} className={styles.input} />  
+      <button onClick={() => searchFuntion(name)} className={styles.Button} >Buscar</button>
       </div>
+      <br/>
       <select onChange={handlerOrderByName}>
         <option>Nombre</option>
         <option value={"Nombre A"} >A-Z</option>
@@ -86,12 +95,15 @@ useEffect(() => {
         <option value={"API"} >Solo Api</option>
         <option value={"BACK"} >Solo Back</option>
       </select>
-      <h1>Page {currentPage + 1}</h1>
-      <button onClick={prevHandler} >Prev</button>
-      <button onClick={nextHandler} >Next</button>
-      {
+      <div>
+      <h1 className={styles.divPage} >Page {currentPage + 1}</h1>
+      <button onClick={prevHandler} className={styles.divPrevNext} >Prev</button>
+      <button onClick={nextHandler} className={styles.divPrevNext} >Next</button>
+      </div>
+      
+        {
       pokemons.map( poke => {
-        return <div key={poke.id}>
+        return <div key={poke.id} className={styles.divCartas} >
           <NavLink to={`/detail/${poke.id}`}>
           <h1>{poke.name}</h1>
           <img src={poke.imagen} alt="imagen" ></img>
@@ -102,6 +114,7 @@ useEffect(() => {
           </div>
       })
       }
+      
     </div>
   );
 }

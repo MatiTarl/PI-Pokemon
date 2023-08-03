@@ -6,7 +6,7 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
   allPokemons: [],
   pokemonsCopy: [],
   pokemonById: [],
-  status: [],
+  status: "",
 }; 
 
  const reducer = (state = initialState, { type, payload }) => { 
@@ -22,7 +22,7 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
       const allPokemonsNameCopy = [...state.allPokemons]; 
       return { 
         ...state, 
-        allPokemons: payload === "Nombre A" ? allPokemonsNameCopy.sort((a, b) => (a.name < b.name ? -1 : 1)) : allPokemonsNameCopy.sort((a, b) => (a.name > b.name ? -1 : 1)) 
+        allPokemons: payload === "Nombre A" ? allPokemonsNameCopy.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)) : allPokemonsNameCopy.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? -1 : 1)) 
       }; 
 // ___________________________________________________________
      case ORDER_ATACK: 

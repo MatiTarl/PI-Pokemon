@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { postPokemon, getPokemons, getTypes, getCopyPokemons} from "../redux/actions";
-import { useDispatch } from "react-redux";
+import { postPokemon, getPokemons, getTypes, getCopyPokemons} from "../../redux/actions";
+import { useDispatch, connect } from "react-redux";
 import { validation } from "./validation";
-
-function Form () {
-
+import styles from "./forms.module.css"
+function Form (prop) {
+    const status = prop.status
     const dispatch = useDispatch();
     const [ errors, setErrors ] = useState({
         general: "Debe completar todos los campos y por lo menos 1 type",
@@ -57,7 +57,8 @@ function Form () {
         },[])    
 
     return(
-       <div>
+       <div className={styles.div3} >
+           {status === "pokemon creado correctamente" ? alert("Pokemon creado con exito") : ""}
            <NavLink to={"/home"} >
                 <button onClick={handleHome} >Home</button>
            </NavLink>
@@ -119,26 +120,29 @@ function Form () {
             <option value={"shadow"} >shadow</option>
             </select>
             <br/>
-            { !errors.general & !errors.name & !errors.imagen & !errors.vida & !errors.ataque & !errors.defensa ? <button>Create</button> : <p>Faltan datos para crear un pokemon</p>}
+            { !errors.general & !errors.name & !errors.imagen & !errors.vida & !errors.ataque & !errors.defensa ? <button>Create</button> : <p className={styles.div2} >Faltan datos para crear un pokemon</p>}
            </form>
            <div>
-            <h3>Errores:</h3>
-            <h4>Generales</h4>
-            {errors.general ? <p>{errors.general}</p> : <p>No hay errores</p>}
-            <h4>Nombre:</h4>
-            {errors.name ? <p>{errors.name}</p> : <p>No hay errores</p>}
-            <h4>Imagen:</h4>
-            {errors.imagen ? <p>{errors.imagen}</p> : <p>No hay errores</p>}
-            <h4>Vida</h4>
-            {errors.vida ? <p>{errors.vida}</p> : <p>No hay errores</p>}
-            <h4>Ataque</h4>
-            {errors.ataque ? <p>{errors.ataque}</p> : <p>No hay errores</p>}
-            <h4>Defensa</h4>
-            {errors.defensa ? <p>{errors.defensa}</p> : <p>No hay errores</p>}
+            <h3 className={styles.div} >Errores:</h3>
+            <h4 className={styles.div} >Generales</h4>
+            {errors.general ? <p className={styles.div2} >{errors.general}</p> : <p>No hay errores</p>}
+            <h4 className={styles.div} >Nombre:</h4>
+            {errors.name ? <p> className={styles.div2} {errors.name}</p> : <p>No hay errores</p>}
+            <h4 className={styles.div} >Imagen:</h4>
+            {errors.imagen ? <p className={styles.div2} >{errors.imagen}</p> : <p>No hay errores</p>}
+            <h4 className={styles.div} >Vida</h4>
+            {errors.vida ? <p className={styles.div2} >{errors.vida}</p> : <p>No hay errores</p>}
+            <h4 className={styles.div} >Ataque</h4>
+            {errors.ataque ? <p className={styles.div2} >{errors.ataque}</p> : <p>No hay errores</p>}
+            <h4 className={styles.div} >Defensa</h4>
+            {errors.defensa ? <p className={styles.div2} >{errors.defensa}</p> : <p>No hay errores</p>}
            </div>
        </div>
     )
    }
    
-   
-   export default Form;
+   const mapStateToProps = (state) => {
+    return { status: state.status
+    };
+  }
+   export default connect(mapStateToProps, null)(Form);

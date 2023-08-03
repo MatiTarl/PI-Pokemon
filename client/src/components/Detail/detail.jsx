@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, connect } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
-import { cleanPokemonId, getPokemonId } from "../redux/actions";
+import { cleanPokemonId, getPokemonId } from "../../redux/actions";
+import styles from "./detail.module.css"
 function Detail (prop) {
     
     const {id} = useParams()
@@ -25,7 +26,7 @@ function Detail (prop) {
            </NavLink>
            {
       allPokemonsCopy.map( poke => {
-        return <div key={poke.id}>
+        return <div key={poke.id} className={styles.div} >
           <h3>ID: {id}</h3>
           <img src={poke.imagen} alt="imagen" ></img>
           <h1>Nombre: {poke.name}</h1>

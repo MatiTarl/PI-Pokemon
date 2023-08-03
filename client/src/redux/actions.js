@@ -53,7 +53,7 @@ export const getByName = (name) => {
         payload: data,
       });
     } catch (error) {
-      return console.log(error.message);
+      return alert("Nombre de pokemon incorrecto")
     }
   };
 };

@@ -1,9 +1,9 @@
 import {Route, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './components/home';
-import Login from './components/login';
-import Detail from './components/detail';
-import Form from './components/form';
+import Home from './components/Home/home';
+import Login from './components/Login/login';
+import Detail from './components/Detail/detail';
+import Form from './components/Forms/form';
 import axios from "axios"
 import React, { useEffect } from 'react';
 
