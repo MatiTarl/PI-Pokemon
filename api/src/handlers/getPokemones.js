@@ -19,7 +19,7 @@ const getPokemons = async (req, res, url, maxpag = 0, allPokemons = []) => {
       allPokemons.push(randomPokemon);
     }
 
-    if (maxpag === 1) {
+    if (maxpag === 2) {
       return allPokemons;
     } else {
       if (data.next) {

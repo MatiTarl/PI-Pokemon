@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {NavLink, Nav } from "react-router-dom";
 import { connect, useDispatch, } from "react-redux";
 import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName} from "../redux/actions";
 
  function Home(prop) {
-       
  const allPokemonsCopy = prop.allPokemons; 
-
-
 //---------------------------handlers de los filtros-----------------------
   const dispatch = useDispatch();
   const handlerOrderByName = (event) => {
@@ -21,7 +18,6 @@ import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName
   }
 //-----------------------SearchBar----------------------------------------
 const [name, setName] = React.useState("");
-
 const handleChange = event => {
    const {value} = event.target;
    setName(value);
@@ -30,7 +26,34 @@ const searchFuntion = (name) => {
   const lowerName = name.toLowerCase()
   dispatch(getByName(lowerName));
 }
-//------------------------Reload pokemons---------------------------------
+//------------------------Paginado----------------------------------------
+const pokemonPerPage = 12; 
+let actualPage = 1;
+const [pokemons, setPokemons] = useState([...allPokemonsCopy].slice(0, pokemonPerPage));
+const [currentPage, setCurrentPage] = useState(0);
+
+const prevHandler = () => {
+    const prevPage = currentPage -1
+    if(prevPage < 0) return;
+    const firstIndex = prevPage * pokemonPerPage; 
+    const lastIndex  = firstIndex + pokemonPerPage;
+    setPokemons([...allPokemonsCopy].slice(firstIndex, lastIndex));
+    setCurrentPage(prevPage);
+}
+const nextHandler = () => {
+    const totalPokemons = allPokemonsCopy.length;
+    const nextPage = currentPage + 1; 
+    const firstIndex = nextPage * pokemonPerPage;
+    const lastIndex  = firstIndex + pokemonPerPage;
+    if(firstIndex > totalPokemons) return;
+    setPokemons([...allPokemonsCopy].slice(firstIndex, lastIndex));
+    setCurrentPage(nextPage);
+}
+
+useEffect(() => {
+  setPokemons([...allPokemonsCopy].slice(0, pokemonPerPage));
+  setCurrentPage(0);
+}, [allPokemonsCopy])
 
 //------------------------------------------------------------------------
 
@@ -63,8 +86,11 @@ const searchFuntion = (name) => {
         <option value={"API"} >Solo Api</option>
         <option value={"BACK"} >Solo Back</option>
       </select>
+      <h1>Page {currentPage + 1}</h1>
+      <button onClick={prevHandler} >Prev</button>
+      <button onClick={nextHandler} >Next</button>
       {
-      allPokemonsCopy.map( poke => {
+      pokemons.map( poke => {
         return <div key={poke.id}>
           <NavLink to={`/detail/${poke.id}`}>
           <h1>{poke.name}</h1>
@@ -81,6 +107,9 @@ const searchFuntion = (name) => {
 }
 
 const mapStateToProps = (state) => {
-  return { allPokemons: state.allPokemons };
+  return { allPokemons: state.allPokemons,
+           currentPage: state.currentPage,
+           displayedPokemons: state.displayedPokemons
+  };
 }
  export default connect(mapStateToProps, null)(Home);

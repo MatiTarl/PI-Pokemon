@@ -11,12 +11,12 @@ const getPokemonsById = async (req, res, url) => {
         vida: data.stats[0].base_stat,
         ataque: data.stats[1].base_stat,
         defensa: data.stats[2].base_stat,
-        type1: data.types[0].type.name,
-        type2: data.types[1].type.name,
+        type1: data.types[0] ? data.types[0].type.name : "",
+        type2: data.types[1] ? data.types[1].type.name : "No Second type",
      }
      return res.status(200).send(pokemonById);
    } catch (error) {
-    return res.staus(405).send({"error": error.message})
+    return res.status(405).send({"error": error.message})
    }
 }
 

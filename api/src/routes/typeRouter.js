@@ -16,7 +16,7 @@ type.get("/", async (req, res) => {
          }  
          return res.status(200).send("Los types fueron cargados correctamente")
           }
-         return res.status(200).send(apiDataBase);
+         return res.status(200).send("Los types ya estan cargados");
 
      } catch (error) {
         res.status(200).send({"error": error.message})

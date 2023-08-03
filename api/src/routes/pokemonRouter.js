@@ -29,11 +29,13 @@ pokemons.get("/", async (req, res) => {
  pokemons.get("/:id", async (req, res) => {
     try {
     const {id} = req.params;
-    const pokemonByDb = await Pokemon.findOne({where: {id: id}});
-    if(pokemonByDb === null){
-        return getPokemonById(req, res, URL);
+    let validation = false
+    if(id.length > 10){ validation = true}
+    if(validation){
+      const pokemonByDb = await Pokemon.findOne({where: {id: id}});
+      return res.status(200).send(pokemonByDb);
     }
-    return res.status(200).send(pokemonByDb);
+    return getPokemonById(req, res, URL);
     } catch (error) {
     return res.status(400).send({"error": error.message});
     }

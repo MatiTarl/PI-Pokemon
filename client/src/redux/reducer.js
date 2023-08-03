@@ -1,8 +1,12 @@
-import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS} from "./actions-type"; 
+import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
+   ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS,
+    POST_POKEMON, GET_TYPES, GET_POKEMON_ID, CLEAN_POKEMON_ID, CHANGE_PAGE, UPDATE_POKEMONS} from "./actions-type"; 
 
  const initialState = { 
   allPokemons: [],
-  PokemonsCopy: [],
+  pokemonsCopy: [],
+  pokemonById: [],
+  status: [],
 }; 
 
  const reducer = (state = initialState, { type, payload }) => { 
@@ -11,8 +15,8 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET
     case GET_POKEMONS: 
       return { ...state, allPokemons: payload }; 
 // ___________________________________________________________
-   case GET_COPY_POKEMONS:
-    return {...state, PokemonsCopy: payload };
+   case GET_COPY_POKEMONS: 
+    return {...state, pokemonsCopy: payload };
 // ___________________________________________________________
      case ORDER_NAME: 
       const allPokemonsNameCopy = [...state.allPokemons]; 
@@ -29,7 +33,7 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET
       }; 
 // ___________________________________________________________
      case ORDER_CREATION: 
-      const allPokemonsCopy = [...state.PokemonsCopy]; 
+      const allPokemonsCopy = [...state.pokemonsCopy]; 
       const pokemonsFiltered = [];
       const filteredPokemons = 
         payload === "API" ? allPokemonsCopy.map((pokemon) => {
@@ -40,7 +44,7 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET
           if(pokemon.id.toString().length > 2){
             pokemonsFiltered.push(pokemon)
           }}) 
-        : payload === "API_BACK" && pokemonsFiltered.push(...state.PokemonsCopy); 
+        : payload === "API_BACK" && pokemonsFiltered.push(...state.pokemonsCopy); 
       return { 
         ...state, 
         allPokemons: pokemonsFiltered 
@@ -48,10 +52,27 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME, ORDER_CREATION, GET_BY_NAME, GET
 // ___________________________________________________________
     case GET_BY_NAME: 
     return {...state, allPokemons: [payload]}
-//_____________________________________________________________ 
-
+//_____________________________________________________________
+    case POST_POKEMON: 
+    return {...state, status: payload}
+//_____________________________________________________________
+    case GET_TYPES:
+      return {...state, status: payload}
+//_____________________________________________________________
+    case GET_POKEMON_ID: 
+    return {...state, pokemonById: [payload]}
+//_____________________________________________________________
+    case CLEAN_POKEMON_ID:
+    return {...state, pokemonById: []}
+//_____________________________________________________________
+    case CHANGE_PAGE:
+      return{...state, currentPage: payload}
+//_____________________________________________________________
+    case UPDATE_POKEMONS: 
+      return{...state, diplayedPokemons: payload}
+//_____________________________________________________________
      default: 
-      return { ...state }; 
+      return { ...state, status: payload}; 
   } 
 }; 
  export default reducer;
