@@ -6,6 +6,7 @@ import { validation } from "./validation";
 import styles from "./forms.module.css"
 function Form (prop) {
     const status = prop.status
+    const types = prop.types
     const dispatch = useDispatch();
     const [ errors, setErrors ] = useState({
         general: "Debe completar todos los campos y por lo menos 1 type",
@@ -58,7 +59,6 @@ function Form (prop) {
 
     return(
        <div className={styles.div3} >
-           {status === "pokemon creado correctamente" ? alert("Pokemon creado con exito") : ""}
            <NavLink to={"/home"} >
                 <button onClick={handleHome} >Home</button>
            </NavLink>
@@ -75,49 +75,11 @@ function Form (prop) {
             <br/>
             <select onChange={handleChange} value={userData.type1} name="type1" >
             <option>Type 1</option>
-            <option value={"normal"}  >normal</option>
-            <option value={"fighting"} >fighting</option>
-            <option value={"flying"} >flying</option>
-            <option value={"poison"} >poison</option>
-            <option value={"ground"} >ground</option>
-            <option value={"rock"} >rock</option>
-            <option value={"bug"} >bug</option>
-            <option value={"ghost"} >ghost</option>
-            <option value={"steel"} >steel</option>
-            <option value={"fire"} >fire</option>
-            <option value={"water"} >water</option>
-            <option value={"grass"} >grass</option>
-            <option value={"electric"} >electric</option>
-            <option value={"psychic"} >psychic</option>
-            <option value={"ice"} >ice</option>
-            <option value={"dragon"} >dragon</option>
-            <option value={"dark"} >dark</option>
-            <option value={"fairy"} >fairy</option>
-            <option value={"unknown"} >unknown</option>
-            <option value={"shadow"} >shadow</option>
+            { types.map(type => <option value={`${type.name}`} >{type.name}</option>) }
             </select>
             <select onChange={handleChange} value={userData.type2} name="type2">
             <option>Type 2</option>
-            <option value={"normal"} >normal</option>
-            <option value={"fighting"} >fighting</option>
-            <option value={"flying"} >flying</option>
-            <option value={"poison"} >poison</option>
-            <option value={"ground"} >ground</option>
-            <option value={"rock"} >rock</option>
-            <option value={"bug"} >bug</option>
-            <option value={"ghost"} >ghost</option>
-            <option value={"steel"} >steel</option>
-            <option value={"fire"} >fire</option>
-            <option value={"water"} >water</option>
-            <option value={"grass"} >grass</option>
-            <option value={"electric"} >electric</option>
-            <option value={"psychic"} >psychic</option>
-            <option value={"ice"} >ice</option>
-            <option value={"dragon"} >dragon</option>
-            <option value={"dark"} >dark</option>
-            <option value={"fairy"} >fairy</option>
-            <option value={"unknown"} >unknown</option>
-            <option value={"shadow"} >shadow</option>
+            { types.map(type => <option value={`${type.name}`} >{type.name}</option>) }
             </select>
             <br/>
             { !errors.general & !errors.name & !errors.imagen & !errors.vida & !errors.ataque & !errors.defensa ? <button>Create</button> : <p className={styles.div2} >Faltan datos para crear un pokemon</p>}
@@ -142,7 +104,8 @@ function Form (prop) {
    }
    
    const mapStateToProps = (state) => {
-    return { status: state.status
+    return { status: state.status,
+             types: state.types
     };
   }
    export default connect(mapStateToProps, null)(Form);

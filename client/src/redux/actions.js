@@ -1,5 +1,5 @@
 import axios from "axios"
-import {GET_POKEMONS, FILTER_POKEMONS, ORDER_NAME, ORDER_ATACK, ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS, POST_POKEMON, GET_TYPES, GET_POKEMON_ID, CLEAN_POKEMON_ID, CHANGE_PAGE, UPDATE_POKEMONS} from "./actions-type"
+import {GET_POKEMONS, FILTER_POKEMONS, ORDER_NAME, ORDER_ATACK, ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS, POST_POKEMON, GET_TYPES, GET_POKEMON_ID, CLEAN_POKEMON_ID, CHANGE_PAGE, UPDATE_POKEMONS, FILTER_BY_TYPES} from "./actions-type"
 
 
 export const getPokemons = () => {
@@ -79,6 +79,7 @@ export const postPokemon = (userData) => {
         "http://localhost:3001/pokemons",
         userData
       );
+      if(data) alert("Pokemon creado correctamente");
       return dispatch({
         type: POST_POKEMON,
         payload: data,
@@ -135,5 +136,11 @@ export const updatePokemons = (pokemons) => {
  return {
   type: UPDATE_POKEMONS,
   payload: pokemons
+}
+}
+export const filterByTypes = (type) => {
+ return {
+  type: FILTER_BY_TYPES,
+  payload: type
 }
 }

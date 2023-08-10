@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from "react";
 import {NavLink, Nav } from "react-router-dom";
 import { connect, useDispatch, } from "react-redux";
-import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName, getPokemons, getCopyPokemons} from "../../redux/actions";
+import { orderPokemons, orderPokemonsByAtack, orderPokemonsByCreation, getByName, getPokemons, getCopyPokemons, filterByTypes} from "../../redux/actions";
 import styles from "./home.module.css";
 
  function Home(prop) {
  const allPokemonsCopy = prop.allPokemons; 
+ const allTypes = prop.types;
 //---------------------------handlers de los filtros-----------------------
   const dispatch = useDispatch();
   const handlerOrderByName = (event) => {
@@ -65,7 +66,12 @@ const resetHandler = () => {
   dispatch(getPokemons());
   dispatch(getCopyPokemons());
 }
-//------------------------------------------------------------------
+//--------------------------filtro de typos-------------------------------
+const handlerTypes = (event) => {
+  dispatch(filterByTypes(event.target.value));
+}
+
+
    return (
     <div className={styles.DivHome}>
       <NavLink to={"/form"} >
@@ -95,6 +101,10 @@ const resetHandler = () => {
         <option value={"API"} >Solo Api</option>
         <option value={"BACK"} >Solo Back</option>
       </select>
+      <select onChange={handlerTypes} >
+        <option value={"A"} >AllTypes</option>
+        { allTypes.map( type => <option value={`${type.name}`} >{type.name}</option>)}
+      </select>
       <div>
       <h1 className={styles.divPage} >Page {currentPage + 1}</h1>
       <button onClick={prevHandler} className={styles.divPrevNext} >Prev</button>
@@ -107,6 +117,7 @@ const resetHandler = () => {
           <NavLink to={`/detail/${poke.id}`}>
           <h1>{poke.name}</h1>
           <img src={poke.imagen} alt="imagen" ></img>
+          {poke.ataque && <h4>Ataque: {poke.ataque}</h4>}
           {poke.type1 && <h4>{poke.type1}</h4>}
           {poke.type2 && <h4>{poke.type2}</h4>}
           {!poke.type2 && <h4>No second type</h4>}
@@ -122,7 +133,8 @@ const resetHandler = () => {
 const mapStateToProps = (state) => {
   return { allPokemons: state.allPokemons,
            currentPage: state.currentPage,
-           displayedPokemons: state.displayedPokemons
+           displayedPokemons: state.displayedPokemons,
+           types: state.types
   };
 }
  export default connect(mapStateToProps, null)(Home);

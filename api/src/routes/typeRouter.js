@@ -6,6 +6,7 @@ const type = Router();
 
 
 type.get("/", async (req, res) => {
+     const allTypes = [];
      try {
           const apiDataBase = await Type.findAll()
           if(apiDataBase.length === 0){
@@ -13,10 +14,11 @@ type.get("/", async (req, res) => {
           for (const item of apiData) {
               const {name} =  item; 
               await Type.create({name})
+              allTypes.push(name);
          }  
-         return res.status(200).send("Los types fueron cargados correctamente")
+         return res.status(200).send(allTypes)
           }
-         return res.status(200).send("Los types ya estan cargados");
+         return res.status(200).send(apiDataBase);
 
      } catch (error) {
         res.status(200).send({"error": error.message})

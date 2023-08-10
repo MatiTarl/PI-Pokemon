@@ -1,11 +1,12 @@
 import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
    ORDER_CREATION, GET_BY_NAME, GET_COPY_POKEMONS,
-    POST_POKEMON, GET_TYPES, GET_POKEMON_ID, CLEAN_POKEMON_ID, CHANGE_PAGE, UPDATE_POKEMONS} from "./actions-type"; 
+    POST_POKEMON, GET_TYPES, GET_POKEMON_ID, CLEAN_POKEMON_ID, CHANGE_PAGE, UPDATE_POKEMONS, FILTER_BY_TYPES} from "./actions-type"; 
 
  const initialState = { 
   allPokemons: [],
   pokemonsCopy: [],
   pokemonById: [],
+  types: [],
   status: "",
 }; 
 
@@ -57,7 +58,7 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
     return {...state, status: payload}
 //_____________________________________________________________
     case GET_TYPES:
-      return {...state, status: payload}
+      return {...state, types: payload}
 //_____________________________________________________________
     case GET_POKEMON_ID: 
     return {...state, pokemonById: [payload]}
@@ -70,6 +71,11 @@ import { GET_POKEMONS, ORDER_ATACK, ORDER_NAME,
 //_____________________________________________________________
     case UPDATE_POKEMONS: 
       return{...state, diplayedPokemons: payload}
+//_____________________________________________________________
+    case FILTER_BY_TYPES:
+      const pokemonsCopy = [...state.pokemonsCopy]; 
+      const pokemonsOrdered = pokemonsCopy.filter( pokemon => pokemon.type1 === payload)
+      return{...state, allPokemons: payload === "A" ? [...state.pokemonsCopy] :pokemonsOrdered}
 //_____________________________________________________________
      default: 
       return { ...state, status: payload}; 

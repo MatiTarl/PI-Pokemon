@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { getCopyPokemons, getPokemons } from '../../redux/actions';
+import { getCopyPokemons, getPokemons, getTypes } from '../../redux/actions';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux"
 import styles from "./login.module.css"
@@ -13,6 +13,7 @@ function Login () {
     if (!dataLoaded) {
       dispatch(getPokemons());
       dispatch(getCopyPokemons());
+      dispatch(getTypes())
       setDataLoaded(true);
     }
     }, [dispatch, dataLoaded]);
